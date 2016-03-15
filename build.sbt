@@ -1,29 +1,9 @@
-organization := "edu.berkeley.eecs"
+giter8Settings
 
-version := "0.1"
+resolvers += Resolver.url("typesafe", url("http://repo.typesafe.com/typesafe/ivy-releases/"))(Resolver.ivyStylePatterns)
 
-scalaVersion in ThisBuild := "2.11.7"
+G8Keys.g8TestBufferLog := false
 
-val prjSettings = Project.defaultSettings ++ Seq(
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:reflectiveCalls",
-                        "-language:implicitConversions", "-language:existentials"),
-  libraryDependencies += "org.json4s" %% "json4s-native" % "3.3.0",
-  libraryDependencies  ++= Seq(
-    "org.scalanlp" %% "breeze" % "0.12",
-    "org.scalanlp" %% "breeze-natives" % "0.12",
-    "org.scalanlp" %% "breeze-viz" % "0.12"
-  ),
-  libraryDependencies <+= scalaVersion("org.scala-lang" % "scala-compiler" % _ ) 
-)
-
-lazy val ChiselDSP = ProjectRef(
-  uri("git://github.com/ucb-art/ChiselDSP.git#master"),
-  "chisel-dsp"
-)
-
-lazy val root = Project(
-  id = fix-me,
-  base = file("."),
-  settings = prjSettings
-).dependsOn(ChiselDSP
+scriptedLaunchOpts ++= sys.process.javaVmArguments.filter(
+  a => Seq("-Xmx", "-Xms", "-XX", "-Dsbt.log.noformat").exists(a.startsWith)
 )
